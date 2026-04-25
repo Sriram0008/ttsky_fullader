@@ -1,19 +1,17 @@
 ## How it works
-This project is a hardware implementation of a 1-bit full adder. It uses combinational logic to perform binary addition. 
-- **Logic:** It calculates the Sum using $A \oplus B \oplus Cin$ and the Carry-out (Cout) using $(A \cdot B) + (Cin \cdot (A \oplus B))$.
-- **Inputs:** The bits to be added are mapped to the first three input pins ($ui[0]$, $ui[1]$, $ui[2]$).
-- **Outputs:** The results are sent to the first two output pins ($uo[0]$ for Sum, $uo[1]$ for Cout).
+This project implements a combinatorial 3-input Full Adder. It uses the first three bits of the input bus (`ui_in[0]`, `ui_in[1]`, and `ui_in[2]`) as the three binary inputs (A, B, and Carry-in). 
+
+The internal logic calculates the sum using the expression `{carry, sum} = a + b + c`. 
+- **uo_out[0]**: Represents the **Sum** (LSB).
+- **uo_out[1]**: Represents the **Carry-out** (MSB).
 
 ## How to test
-After power-on and reset:
-1. Apply logic levels to the input pins:
-   - `ui[0]`: Input A
-   - `ui[1]`: Input B
-   - `ui[2]`: Carry-in (Cin)
-2. Observe the output pins:
-   - `uo[0]`: Sum bit
-   - `uo[1]`: Carry-out bit
-3. Verify against the Full Adder truth table (e.g., if all three inputs are 1, both Sum and Cout should be 1).
+After power-on and releasing reset (`rst_n` high), you can test the logic by applying signals to the input pins:
+1. Set `ui_in` to `1` (`001` binary): `uo_out` should be `1` (Sum=1, Carry=0).
+2. Set `ui_in` to `3` (`011` binary): `uo_out` should be `2` (Sum=0, Carry=1).
+3. Set `ui_in` to `7` (`111` binary): `uo_out` should be `3` (Sum=1, Carry=1).
+
+The automated tests are handled by cocotb in `test/test.py`.
 
 ## External hardware
-No external hardware is required. You can test this using the onboard switches and LEDs on the Tiny Tapeout demo board.
+None. This project uses internal logic only.
