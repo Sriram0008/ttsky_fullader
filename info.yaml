@@ -1,24 +1,28 @@
 # Tiny Tapeout project information
 project:
-  title:        "Full Adder"      
-  author:       "sriram"      
-  discord:      ""      
-  description:  "A standard 1-bit full adder implementation in Verilog"      
+  title:        "full_adder"      # Project title
+  author:       "sriram"      # Your name
+  discord:      ""      # Your discord username (optional)
+  description:  "A simple 1-bit full adder with carry-in and carry-out"      # FIXED: Added description
   language:     "Verilog" 
   clock_hz:     0       
 
+  # How many tiles your design occupies?
   tiles: "1x1"          
 
+  # Your top module name must match your verilog module name:
   top_module:  "tt_um_example"
 
+  # List your project's source files here.
   source_files:
     - "project.v"
 
+# The pinout of your project. 
 pinout:
   # Inputs
-  ui[0]: "a"
-  ui[1]: "b"
-  ui[2]: "cin"
+  ui[0]: "a"      # Input A
+  ui[1]: "b"      # Input B
+  ui[2]: "cin"    # Carry In
   ui[3]: ""
   ui[4]: ""
   ui[5]: ""
@@ -26,8 +30,8 @@ pinout:
   ui[7]: ""
 
   # Outputs
-  uo[0]: "sum"
-  uo[1]: "cout"
+  uo[0]: "sum"    # Sum Output
+  uo[1]: "cout"   # Carry Out
   uo[2]: ""
   uo[3]: ""
   uo[4]: ""
@@ -45,4 +49,5 @@ pinout:
   uio[6]: ""
   uio[7]: ""
 
+# Do not change!
 yaml_version: 6
