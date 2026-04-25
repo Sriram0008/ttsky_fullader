@@ -7,7 +7,7 @@ async def test_project(dut):
     dut._log.info("Start")
 
     # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, units="us")
+    clock = Clock(dut.clk, 10, unit="us")
     cocotb.start_soon(clock.start())
 
     # Reset
@@ -16,23 +16,28 @@ async def test_project(dut):
     dut.ui_in.value = 0
     dut.uio_in.value = 0
     dut.rst_n.value = 0
-    await Timer(20, units="us")
+    await Timer(20, unit="us")
     dut.rst_n.value = 1
-    await Timer(20, units="us")
+    await Timer(20, unit="us")
 
     dut._log.info("Test project behavior")
 
-    # Test Case 1: 1 + 1 + 0 (Cin) = 2 (Binary 10)
-    # A=ui[0], B=ui[1], Cin=ui[2]
-    dut.ui_in.value = 0b00000011 # A=1, B=1, Cin=0
-    await Timer(10, units="us")
-    # Expected: Sum=0 (uo[0]), Cout=1 (uo[1]) -> Binary 00000010 (Decimal 2)
+    # CASE 1: 1 + 0 + 0 = 1 (Sum=1, Cout=0)
+    # Binary: 00000001 (Decimal 1)
+    dut.ui_in.value = 1 
+    await Timer(10, unit="us")
+    assert dut.uo_out.value == 1
+
+    # CASE 2: 1 + 1 + 0 = 2 (Sum=0, Cout=1)
+    # Binary: 00000010 (Decimal 2)
+    dut.ui_in.value = 3 # bits 0 and 1 are high
+    await Timer(10, unit="us")
     assert dut.uo_out.value == 2
 
-    # Test Case 2: 1 + 1 + 1 (Cin) = 3 (Binary 11)
-    dut.ui_in.value = 0b00000111 # A=1, B=1, Cin=1
-    await Timer(10, units="us")
-    # Expected: Sum=1 (uo[0]), Cout=1 (uo[1]) -> Binary 00000011 (Decimal 3)
+    # CASE 3: 1 + 1 + 1 = 3 (Sum=1, Cout=1)
+    # Binary: 00000011 (Decimal 3)
+    dut.ui_in.value = 7 # bits 0, 1, and 2 are high
+    await Timer(10, unit="us")
     assert dut.uo_out.value == 3
 
-    dut._log.info("Finished test!")
+    dut._log.info("Finished all tests successfully!")
